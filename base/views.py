@@ -1,18 +1,22 @@
 from django.shortcuts import render
-
+from .models import Room
+from .forms import RoomForm
 
 # create rooms
-
-room = [   
-    {'id': 'id1', 'name': 'lets learn python'},
-    {'id': 'id2', 'name': 'lets learn java'},
-    {'id': 'id3', 'name': 'lets learn c++'},
-]
 
 
 
 def home(request):
-    return render(request, 'home.html', {'rooms': room})
+    rooms = Room.objects.all()
+    context={"rooms": rooms}
+    return render(request, 'base/home.html', context)
 
-def rooms(request):
-    return render(request, 'rooms.html')
+def rooms(request,pk):
+    room = Room.objects.get(id=pk)
+    context={"room": room}
+    return render(request, 'base/rooms.html', context)
+
+def createRoom(request):
+    form = RoomForm()
+    context={"form": form}
+    return render(request, 'base/room_form.html', context)
